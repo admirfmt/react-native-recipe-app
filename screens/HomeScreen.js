@@ -1,0 +1,68 @@
+import { View, Text, Pressable, StyleSheet } from "react-native";
+
+export default function HomeScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Recipe App</Text>
+      <Text style={styles.subtitle}>Find, create, save and share recipes.</Text>
+
+      <Pressable
+        style={styles.primary}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={styles.primaryText}>Log in</Text>
+      </Pressable>
+
+      <Pressable
+        style={styles.secondary}
+        onPress={() => navigation.navigate("Register")}
+      >
+        <Text style={styles.secondaryText}>Register</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 24,
+    gap: 16
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#555"
+  },
+  primary: {
+    backgroundColor: "#2e7d32",
+    padding: 14,
+    borderRadius: 8,
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  primaryText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16
+  },
+  secondary: {
+    borderWidth: 1,
+    borderColor: "#2e7d32",
+    padding: 14,
+    borderRadius: 8,
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  secondaryText: {
+    color: "#2e7d32",
+    textAlign: "center",
+    fontSize: 16
+  },
+});
