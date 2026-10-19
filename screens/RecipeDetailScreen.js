@@ -11,6 +11,7 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { getRecipe, deleteRecipe } from "../api/recipes";
+import { fontSize, fontWeight } from "../constants/typography";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -96,12 +97,12 @@ const styles = StyleSheet.create({
     gap: 12
   },
   recipeTitle: {
-    fontSize: 24,
-    fontWeight: "bold"
+    fontSize: fontSize.xLarge,
+    fontWeight: fontWeight.bold
   },
   ingredientsTitle: {
-    fontSize: 16,
-    fontWeight: "600"
+    fontSize: fontSize.medium,
+    fontWeight: fontWeight.bold
   },
   loadingText: {
     flex: 1,
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
   },
   deleteButton: {
     borderWidth: 1,
@@ -139,6 +140,6 @@ const styles = StyleSheet.create({
   deleteText: {
     color: "#c62828",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
   },
 });

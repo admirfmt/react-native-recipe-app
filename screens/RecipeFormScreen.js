@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  View,
   Text,
   TextInput,
   Pressable,
@@ -11,6 +12,8 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { createRecipe } from "../api/recipes";
 import { updateRecipe } from "../api/recipes";
+import { fontSize, fontWeight } from "../constants/typography";
+import { CATEGORIES } from "../config";
 
 export default function RecipeFormScreen({ navigation, route }) {
   const isExistingRecipe = route.params?.recipe;
@@ -21,6 +24,7 @@ export default function RecipeFormScreen({ navigation, route }) {
   const [ingredientsText, setIngredientsText] = useState(isExistingRecipe?.ingredients?.join("\n") ?? "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [category, setCategory] = useState(isExistingRecipe?.category ?? "Other");
 
   const handleSave = async () => {
     const ingredients = ingredientsText
@@ -34,12 +38,12 @@ export default function RecipeFormScreen({ navigation, route }) {
     setError("");
     setBusy(true);
     try {
-      const recipeData = { title: title.trim(), ingredients };
+      const recipeData = { title: title.trim(), ingredients, category };
       if (isEditMode) {
         await updateRecipe(isExistingRecipe.id, recipeData, token);
         Alert.alert("Done", "The recipe has been updated.");
       } else {
-        await createRecipe({ title: title.trim(), ingredients }, token);
+        await createRecipe(recipeData, token);
         Alert.alert("Done", "The recipe has been saved.");
       }
       navigation.goBack();
@@ -69,6 +73,19 @@ export default function RecipeFormScreen({ navigation, route }) {
         placeholder={"3 dag flour\n6 dl milk\n3 eggs"}
       />
 
+      <Text style={styles.label}>Category</Text>
+      <View style={styles.chips}>
+        {CATEGORIES.map((c) => (
+          <Pressable
+            key={c}
+            style={[styles.chip, category === c && styles.chipActive]}
+            onPress={() => setCategory(c)}
+          >
+            <Text style={[styles.chipText, category === c && styles.chipTextActive]}>{c}</Text>
+          </Pressable>
+        ))}
+      </View>
+
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Pressable
@@ -92,15 +109,15 @@ const styles = StyleSheet.create({
     gap: 8
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600"
+    fontSize: fontSize.small,
+    fontWeight: fontWeight.bold
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
+    fontSize: fontSize.medium,
     minHeight: 48,
   },
   multiline: {
@@ -121,6 +138,29 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
+  },
+  chips: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8
+  },
+  chip: {
+    borderWidth: 1,
+    borderColor: "#2e7d32",
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    minHeight: 40,
+    justifyContent: "center",
+  },
+  chipActive: {
+    backgroundColor: "#2e7d32"
+  },
+  chipText: {
+    color: "#2e7d32"
+  },
+  chipTextActive: {
+    color: "#fff"
   },
 });

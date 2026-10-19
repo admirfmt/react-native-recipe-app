@@ -57,7 +57,16 @@ function requireAuth(req, res, next) {
 }
 
 server.get("/api/recipes", requireAuth, (req, res) => {
-  res.json(recipes.filter((r) => r.userId === req.user.userId));
+  const search = (req.query.search || "").trim().toLowerCase();
+  const category = (req.query.category || "").trim().toLowerCase();
+
+  const result = recipes.filter((r) => {
+    const matchesSearch = !search || r.title.toLowerCase().includes(search);
+    const matchesCategory = !category || (r.category || "").toLowerCase() === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  res.json(result);
 });
 
 server.get("/api/recipes/:id", requireAuth, (req, res) => {
@@ -69,11 +78,17 @@ server.get("/api/recipes/:id", requireAuth, (req, res) => {
 });
 
 server.post("/api/recipes", requireAuth, (req, res) => {
-  const { title, ingredients } = req.body;
+  const { title, ingredients, category } = req.body;
   if (!title || !Array.isArray(ingredients)) {
     return res.status(400).json({ message: "Title and ingredients are required." });
   }
-  const recipe = { id: nextRecipeId++, title, ingredients, userId: req.user.userId };
+  const recipe = {
+    id: nextRecipeId++,
+    title: title.trim(),
+    ingredients,
+    category: category || "Other",
+    userId: req.user?.userId ?? null,
+  };
   recipes.push(recipe);
   res.status(201).json(recipe);
 });
@@ -83,7 +98,7 @@ server.patch("/api/recipes/:id", requireAuth, (req, res) => {
   const recipe = recipes.find((r) => r.id === Number(req.params.id));
   if (!recipe) return res.status(404).json({ message: "Could not find recipe." });
 
-  const { title, ingredients } = req.body;
+  const { title, ingredients, category } = req.body;
   if (title !== undefined) {
     if (!title.trim()) return res.status(400).json({ message: "Title is required." });
     recipe.title = title.trim();
@@ -94,6 +109,7 @@ server.patch("/api/recipes/:id", requireAuth, (req, res) => {
     }
     recipe.ingredients = ingredients;
   }
+  if (category !== undefined) recipe.category = category;
   res.json(recipe);
 });
 

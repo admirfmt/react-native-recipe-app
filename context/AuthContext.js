@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
         const saved = await SecureStore.getItemAsync("authToken");
         if (saved) setToken(saved);
       } catch (e) {
-        console.error("Kunde inte läsa token:", e);
+        console.error("Could not read token:", e);
       } finally {
         setLoading(false);
       }

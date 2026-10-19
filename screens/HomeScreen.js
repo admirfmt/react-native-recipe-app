@@ -1,4 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import { fontSize, fontWeight } from "../constants/typography";
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -38,12 +39,12 @@ const styles = StyleSheet.create({
     gap: 16
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
+    fontSize: fontSize.xxLarge,
+    fontWeight: fontWeight.bold,
     textAlign: "center"
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: fontSize.medium,
     textAlign: "center",
     color: "#555"
   },
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   primaryText: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
   },
   secondary: {
     borderWidth: 1,
@@ -70,6 +71,6 @@ const styles = StyleSheet.create({
   secondaryText: {
     color: "#2e7d32",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
   },
 });

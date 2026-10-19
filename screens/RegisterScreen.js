@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert
 } from "react-native";
+import { fontSize, fontWeight } from "../constants/typography";
 
 export default function RegisterScreen({ navigation }) {
   const { signUp } = useAuth();
@@ -71,15 +72,15 @@ const styles = StyleSheet.create({
     gap: 8
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600"
+    fontSize: fontSize.small,
+    fontWeight: fontWeight.bold
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
+    fontSize: fontSize.medium,
     minHeight: 48,
   },
   error: {
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16
+    fontSize: fontSize.medium
   },
   link: {
     color: "#2e7d32",

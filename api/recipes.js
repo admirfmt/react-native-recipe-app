@@ -1,6 +1,12 @@
 import { apiRequest } from "./client";
 
-export const getRecipes = (token) => apiRequest("/api/recipes", { token });
+export const getRecipes = (token, { search = "", category = "" } = {}) => {
+  const params = [];
+  if (search) params.push(`search=${encodeURIComponent(search)}`);
+  if (category) params.push(`category=${encodeURIComponent(category)}`);
+  const query = params.length ? `?${params.join("&")}` : "";
+  return apiRequest(`/api/recipes${query}`, { token });
+};
 
 export const getRecipe = (id, token) => apiRequest(`/api/recipes/${id}`, { token });
 
