@@ -6,12 +6,14 @@ import {
   ActivityIndicator,
   Alert,
   ScrollView,
+  Share,
   StyleSheet,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { getRecipe, deleteRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
+import { buildShareText } from "../utils/shareText";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -56,6 +58,24 @@ export default function RecipeDetailScreen({ route, navigation }) {
       Alert.alert("Error", e.message || "Could not delete the recipe. Please try again.");
     }
   };
+
+  const handleShare = async () => {
+    try {
+      const result = await Share.share({
+        title: recipe.title,
+        message: buildShareText(recipe),
+      });
+
+      if (result.action === Share.sharedAction) {
+        Alert.alert("Done", "Recipe has been shared.");
+      }
+
+    } catch (e) {
+      console.error("Sharing was unsuccessful:", e);
+      Alert.alert("Error", "Could not share recipe. Try again.");
+    }
+  };
+
   if (loading) return <View style={styles.loadingText}><ActivityIndicator size="large" /></View>;
   if (error) return <View style={styles.errorText}><Text>{error}</Text></View>;
 
@@ -67,8 +87,10 @@ export default function RecipeDetailScreen({ route, navigation }) {
         <Text key={i} style={styles.item}>- {ing}</Text>
       ))}
       <View style={styles.actions}>
-        <Pressable
-          style={styles.button}
+        <Pressable style={styles.shareButton} onPress={handleShare}>
+          <Text style={styles.shareText}>Share</Text>
+        </Pressable>
+        <Pressable style={styles.button}
           onPress={() => navigation.navigate("RecipeForm", { recipe })}
         >
           <Text style={styles.buttonText}>Edit</Text>
@@ -139,6 +161,19 @@ const styles = StyleSheet.create({
   },
   deleteText: {
     color: "#c62828",
+    textAlign: "center",
+    fontSize: fontSize.medium
+  },
+  shareButton: {
+    borderWidth: 1,
+    borderColor: "#2e7d32",
+    padding: 14,
+    borderRadius: 8,
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  shareText: {
+    color: "#2e7d32",
     textAlign: "center",
     fontSize: fontSize.medium
   },
