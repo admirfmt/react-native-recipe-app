@@ -1,24 +1,36 @@
+import { ActivityIndicator } from "react-native";
+import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import {
   Text,
   TextInput,
   Pressable,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 
 export default function RegisterScreen({ navigation }) {
+  const { signUp } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  const handleRegister = () => {
-    if (username.trim().length < 5)
-      return setError("Username must be at least 5 characters long.");
-    if (password.trim().length < 8)
+  const handleRegister = async () => {
+    if (!username) return setError("Username is required.");
+    if (password.length < 8)
       return setError("Password must be at least 8 characters long.");
 
     setError("");
+    setBusy(true);
+    try {
+      await signUp(username.trim(), password);
+      Alert.alert("Done", "Account created successfully. You can log in now.");
+    } catch (e) {
+      setError(e.status === 409 ? "Username already exists." : e.message);
+      setBusy(false);
+    }
     console.log("Registering user:", username, password);
   };
 
@@ -42,8 +54,8 @@ export default function RegisterScreen({ navigation }) {
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <Pressable style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Create Account</Text>
+      <Pressable style={[styles.button, busy && { opacity: 0.6 }]} onPress={handleRegister} disabled={busy}>
+        {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Create Account</Text>}
       </Pressable>
 
       <Pressable onPress={() => navigation.navigate("Login")}>

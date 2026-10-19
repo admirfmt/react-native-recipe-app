@@ -12,6 +12,12 @@ export default function HomeScreen({ navigation }) {
       >
         <Text style={styles.primaryText}>Log in</Text>
       </Pressable>
+      <Pressable
+        style={styles.primary}
+        onPress={() => navigation.navigate("Recipes")}
+      >
+        <Text style={styles.primaryText}>View Recipes</Text>
+      </Pressable>
 
       <Pressable
         style={styles.secondary}
@@ -19,6 +25,7 @@ export default function HomeScreen({ navigation }) {
       >
         <Text style={styles.secondaryText}>Register</Text>
       </Pressable>
+
     </View>
   );
 }
