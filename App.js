@@ -45,7 +45,9 @@ export default function App() {
           <Stack.Screen
             name="RecipeForm"
             component={RecipeFormScreen}
-            options={{ title: "New Recipe" }}
+            options={({ route }) => ({
+              title: route.params?.recipe ? "Edit Recipe" : "New Recipe"
+            })}
           />
         </Stack.Navigator>
       </NavigationContainer>

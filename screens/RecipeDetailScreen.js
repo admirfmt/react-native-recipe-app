@@ -1,38 +1,91 @@
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { useCallback, useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
-import { getRecipe } from "../api/recipes";
-import { useEffect, useState } from "react";
+import { getRecipe, deleteRecipe } from "../api/recipes";
 
-export default function RecipeDetailScreen({ route }) {
+export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
   const { token } = useAuth();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setRecipe(await getRecipe(recipeId, token));
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    setError("");
+    try {
+      setRecipe(await getRecipe(recipeId, token));
+    } catch (e) {
+      setError(e.status === 404 ? "Recipe not found." : e.message);
+    } finally {
+      setLoading(false);
+    }
   }, [recipeId, token]);
 
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [load])
+  );
+
+  const confirmDelete = () => {
+    Alert.alert("Delete Recipe", "Are you sure you want to delete the recipe?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Delete", style: "destructive", onPress: handleDelete },
+    ]);
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      await deleteRecipe(recipeId, token);
+      Alert.alert("Done", "The recipe has been deleted.");
+      navigation.goBack();
+    } catch (e) {
+      setDeleting(false);
+      Alert.alert("Error", e.message || "Could not delete the recipe. Please try again.");
+    }
+  };
   if (loading) return <View style={styles.loadingText}><ActivityIndicator size="large" /></View>;
   if (error) return <View style={styles.errorText}><Text>{error}</Text></View>;
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.recipeTitle}>{recipe.title}</Text>
       <Text style={styles.ingredientsTitle}>Ingredients</Text>
       {recipe.ingredients?.map((ing, i) => (
-        <Text key={i}>- {ing}</Text>
+        <Text key={i} style={styles.item}>- {ing}</Text>
       ))}
-    </View>
+      <View style={styles.actions}>
+        <Pressable
+          style={styles.button}
+          onPress={() => navigation.navigate("RecipeForm", { recipe })}
+        >
+          <Text style={styles.buttonText}>Edit</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.deleteButton, deleting && { opacity: 0.6 }]}
+          onPress={confirmDelete}
+          disabled={deleting}
+        >
+          {deleting ? (
+            <ActivityIndicator color="#c62828" />
+          ) : (
+            <Text style={styles.deleteText}>Delete</Text>
+          )}
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -58,5 +111,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
-  }
+  },
+  actions: {
+    marginTop: 24,
+    gap: 12
+  },
+  button: {
+    backgroundColor: "#2e7d32",
+    padding: 14,
+    borderRadius: 8,
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16
+  },
+  deleteButton: {
+    borderWidth: 1,
+    borderColor: "#c62828",
+    padding: 14,
+    borderRadius: 8,
+    minHeight: 48,
+    justifyContent: "center",
+  },
+  deleteText: {
+    color: "#c62828",
+    textAlign: "center",
+    fontSize: 16
+  },
 });

@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { createRecipe } from "../api/recipes";
+import { updateRecipe } from "../api/recipes";
 
-export default function RecipeFormScreen({ navigation }) {
+export default function RecipeFormScreen({ navigation, route }) {
+  const isExistingRecipe = route.params?.recipe;
+  const isEditMode = !!isExistingRecipe;
+
   const { token } = useAuth();
-  const [title, setTitle] = useState("");
-  const [ingredientsText, setIngredientsText] = useState("");
+  const [title, setTitle] = useState(isExistingRecipe?.title ?? "");
+  const [ingredientsText, setIngredientsText] = useState(isExistingRecipe?.ingredients?.join("\n") ?? "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -30,8 +34,14 @@ export default function RecipeFormScreen({ navigation }) {
     setError("");
     setBusy(true);
     try {
-      await createRecipe({ title: title.trim(), ingredients }, token);
-      Alert.alert("Done", "The recipe has been saved.");
+      const recipeData = { title: title.trim(), ingredients };
+      if (isEditMode) {
+        await updateRecipe(isExistingRecipe.id, recipeData, token);
+        Alert.alert("Done", "The recipe has been updated.");
+      } else {
+        await createRecipe({ title: title.trim(), ingredients }, token);
+        Alert.alert("Done", "The recipe has been saved.");
+      }
       navigation.goBack();
     } catch (e) {
       setError(e.message || "Could not save the recipe. Please try again.");
@@ -69,7 +79,7 @@ export default function RecipeFormScreen({ navigation }) {
         {busy ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={styles.buttonText}>Save Recipe</Text>
+          <Text style={styles.buttonText}>{isEditMode ? "Update Recipe" : "Save Recipe"}</Text>
         )}
       </Pressable>
     </ScrollView>

@@ -78,6 +78,34 @@ server.post("/api/recipes", requireAuth, (req, res) => {
   res.status(201).json(recipe);
 });
 
+// Update
+server.patch("/api/recipes/:id", requireAuth, (req, res) => {
+  const recipe = recipes.find((r) => r.id === Number(req.params.id));
+  if (!recipe) return res.status(404).json({ message: "Could not find recipe." });
+
+  const { title, ingredients } = req.body;
+  if (title !== undefined) {
+    if (!title.trim()) return res.status(400).json({ message: "Title is required." });
+    recipe.title = title.trim();
+  }
+  if (ingredients !== undefined) {
+    if (!Array.isArray(ingredients) || ingredients.length === 0) {
+      return res.status(400).json({ message: "At least one ingredient is required." });
+    }
+    recipe.ingredients = ingredients;
+  }
+  res.json(recipe);
+});
+
+// Delete
+server.delete("/api/recipes/:id", requireAuth, (req, res) => {
+  const index = recipes.findIndex((r) => r.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ message: "Could not find recipe." });
+
+  recipes.splice(index, 1);
+  res.status(204).send();
+});
+
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
