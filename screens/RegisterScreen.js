@@ -1,4 +1,3 @@
-import { ActivityIndicator } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import {
@@ -10,6 +9,7 @@ import {
   Alert
 } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 export default function RegisterScreen({ navigation }) {
   const { signUp } = useAuth();
@@ -56,7 +56,7 @@ export default function RegisterScreen({ navigation }) {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Pressable style={[styles.button, busy && { opacity: 0.6 }]} onPress={handleRegister} disabled={busy}>
-        {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Create Account</Text>}
+        {busy ? <LoadingIndicator color="#fff" /> : <Text style={styles.buttonText}>Create Account</Text>}
       </Pressable>
 
       <Pressable onPress={() => navigation.navigate("Login")}>

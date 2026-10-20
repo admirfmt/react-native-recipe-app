@@ -5,7 +5,6 @@ import {
   TextInput,
   FlatList,
   Pressable,
-  ActivityIndicator,
   StyleSheet,
   RefreshControl,
   ScrollView,
@@ -15,6 +14,7 @@ import { useAuth } from "../context/AuthContext";
 import { getRecipes } from "../api/recipes";
 import { CATEGORIES } from "../config";
 import { fontSize, fontWeight } from "../constants/typography";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 export default function RecipesScreen({ navigation }) {
   const { token } = useAuth();
@@ -108,7 +108,7 @@ export default function RecipesScreen({ navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" />
+        <LoadingIndicator size="large" />
       </View>
     );
   }
@@ -155,7 +155,7 @@ export default function RecipesScreen({ navigation }) {
         </ScrollView>
       </View>
 
-      {fetching ? <ActivityIndicator style={{ marginVertical: 8 }} /> : null}
+      {fetching ? <LoadingIndicator style={{ marginVertical: 8 }} /> : null}
 
       <FlatList
         data={error ? [] : recipes}

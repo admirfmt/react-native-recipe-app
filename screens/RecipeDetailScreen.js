@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Pressable,
-  ActivityIndicator,
   Alert,
   ScrollView,
   Share,
@@ -14,6 +13,7 @@ import { useAuth } from "../context/AuthContext";
 import { getRecipe, deleteRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
 import { buildShareText } from "../utils/shareText";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -76,7 +76,7 @@ export default function RecipeDetailScreen({ route, navigation }) {
     }
   };
 
-  if (loading) return <View style={styles.loadingText}><ActivityIndicator size="large" /></View>;
+  if (loading) return <View style={styles.loadingText}><LoadingIndicator size="large" /></View>;
   if (error) return <View style={styles.errorText}><Text>{error}</Text></View>;
 
   return (
@@ -102,7 +102,7 @@ export default function RecipeDetailScreen({ route, navigation }) {
           disabled={deleting}
         >
           {deleting ? (
-            <ActivityIndicator color="#c62828" />
+            <LoadingIndicator color="#c62828" />
           ) : (
             <Text style={styles.deleteText}>Delete</Text>
           )}

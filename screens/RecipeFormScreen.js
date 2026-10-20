@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   Pressable,
-  ActivityIndicator,
   Alert,
   StyleSheet,
   ScrollView,
@@ -14,6 +13,7 @@ import { createRecipe } from "../api/recipes";
 import { updateRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
 import { CATEGORIES } from "../config";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 export default function RecipeFormScreen({ navigation, route }) {
   const isExistingRecipe = route.params?.recipe;
@@ -94,7 +94,7 @@ export default function RecipeFormScreen({ navigation, route }) {
         disabled={busy}
       >
         {busy ? (
-          <ActivityIndicator color="#fff" />
+          <LoadingIndicator color="#fff" />
         ) : (
           <Text style={styles.buttonText}>{isEditMode ? "Update Recipe" : "Save Recipe"}</Text>
         )}

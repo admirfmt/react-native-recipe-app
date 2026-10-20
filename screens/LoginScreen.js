@@ -3,12 +3,12 @@ import {
   Text,
   TextInput,
   Pressable,
-  ActivityIndicator,
   StyleSheet,
   ScrollView,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { fontSize, fontWeight } from "../constants/typography";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 export default function LoginScreen({ navigation }) {
   const { signIn } = useAuth();
@@ -48,7 +48,7 @@ export default function LoginScreen({ navigation }) {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <Pressable style={[styles.button, busy && { opacity: 0.6 }]} onPress={handleLogin} disabled={busy}>
-        {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
+        {busy ? <LoadingIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
       </Pressable>
 
       <Pressable onPress={() => navigation.navigate("Register")}>
