@@ -14,6 +14,7 @@ import { getRecipe, deleteRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
 import { buildShareText } from "../utils/shareText";
 import { LoadingIndicator } from "../components/LoadingIndicator";
+import { useFavorites } from "../context/FavoritesContext";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -22,6 +23,7 @@ export default function RecipeDetailScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const load = useCallback(async () => {
     setError("");
@@ -87,6 +89,14 @@ export default function RecipeDetailScreen({ route, navigation }) {
         <Text key={i} style={styles.item}>- {ing}</Text>
       ))}
       <View style={styles.actions}>
+        <Pressable
+          style={[styles.shareButton, isFavorite(recipe.id) && styles.favActive]}
+          onPress={() => toggleFavorite(recipe.id)}
+        >
+          <Text style={[styles.shareText, isFavorite(recipe.id) && { color: "#fff" }]}>
+            {isFavorite(recipe.id) ? "♥ Remove from Favorites" : "♡ Add to Favorites"}
+          </Text>
+        </Pressable>
         <Pressable style={styles.shareButton} onPress={handleShare}>
           <Text style={styles.shareText}>Share</Text>
         </Pressable>
@@ -176,5 +186,8 @@ const styles = StyleSheet.create({
     color: "#2e7d32",
     textAlign: "center",
     fontSize: fontSize.medium
+  },
+  favActive: {
+    backgroundColor: "#2e7d32"
   },
 });

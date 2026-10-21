@@ -15,6 +15,7 @@ import { getRecipes } from "../api/recipes";
 import { CATEGORIES } from "../config";
 import { fontSize, fontWeight } from "../constants/typography";
 import { LoadingIndicator } from "../components/LoadingIndicator";
+import { useFavorites } from "../context/FavoritesContext";
 
 export default function RecipesScreen({ navigation }) {
   const { token } = useAuth();
@@ -28,6 +29,7 @@ export default function RecipesScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const requestId = useRef(0);
+  const { isFavorite } = useFavorites();
 
   useEffect(() => {
     const t = setTimeout(() => setSearch(searchText.trim()), 400);
@@ -97,7 +99,7 @@ export default function RecipesScreen({ navigation }) {
         </Text>
         {hasFilter ? (
           <Pressable style={styles.button} onPress={clearFilters}>
-            <Text style={styles.buttonText}>Clar filter</Text>
+            <Text style={styles.buttonText}>Clear filter</Text>
           </Pressable>
         ) : (
           <Text style={styles.emptyText}>Create your first recept to get started.</Text>
@@ -169,7 +171,9 @@ export default function RecipesScreen({ navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate("RecipeDetail", { recipeId: item.id })}
           >
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>
+              {isFavorite(item.id) ? "♥ " : ""}{item.title}
+            </Text>
             <Text style={styles.category}>{item.category || "Other"}</Text>
             <Text style={styles.meta} numberOfLines={1}>
               {item.ingredients?.join(", ")}
