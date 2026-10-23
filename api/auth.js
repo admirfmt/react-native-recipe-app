@@ -5,3 +5,5 @@ export const loginRequest = (username, password) =>
 
 export const registerRequest = (username, password) =>
   apiRequest("/api/auth/register", { method: "POST", body: { username, password } });
+
+export const meRequest = (token) => apiRequest("/api/auth/me", { token });

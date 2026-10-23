@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
-import { loginRequest, registerRequest } from "../api/auth";
+import { loginRequest, registerRequest, meRequest } from "../api/auth";
 import { setUnauthorizedHandler } from "../api/client";
 
 const AuthContext = createContext(null);
@@ -8,12 +8,20 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     (async () => {
       try {
         const saved = await SecureStore.getItemAsync("authToken");
-        if (saved) setToken(saved);
+        if (saved) {
+          setToken(saved);
+          try {
+            setUser(await meRequest(saved));
+          } catch (e) {
+            console.error("Could not load username:", e);
+          }
+        }
       } catch (e) {
         console.error("Could not read token:", e);
       } finally {
@@ -28,6 +36,7 @@ export function AuthProvider({ children }) {
     } catch (e) {
       console.error("Could not delete token:", e);
     }
+    setUser(null);
     setToken(null);
   };
 
@@ -39,17 +48,22 @@ export function AuthProvider({ children }) {
     const data = await loginRequest(username, password);
     if (!data?.token) throw new Error("Unexpected response from server.");
     await SecureStore.setItemAsync("authToken", data.token);
+    try {
+      setUser(await meRequest(data.token));
+    } catch (e) {
+      console.error("Could not load username:", e);
+    }
     setToken(data.token);
   };
 
   const signUp = async (username, password) => {
     await registerRequest(username, password);
-    await signIn(username, password);
+    //await signIn(username, password);
   };
 
   return (
     <AuthContext.Provider
-      value={{ token, isSignedIn: !!token, loading, signIn, signUp, signOut }}
+      value={{ token, user, isSignedIn: !!token, loading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>

@@ -29,11 +29,6 @@ function AppNavigator() {
         {isSignedIn ? (
           <>
             <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: "Recipe App" }}
-            />
-            <Stack.Screen
               name="Recipes"
               component={RecipesScreen}
               options={({ navigation }) => ({
@@ -49,6 +44,11 @@ function AppNavigator() {
                   </Pressable>
                 ),
               })}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: "Recipe App" }}
             />
             <Stack.Screen
               name="Login"

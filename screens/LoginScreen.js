@@ -27,6 +27,7 @@ export default function LoginScreen({ navigation }) {
     try {
       await signIn(username.trim(), password);
       Alert.alert("Done", "You are logged in.");
+      navigation.navigate("Home");
     } catch (e) {
       setError(
         e.status === 400 || e.status === 401

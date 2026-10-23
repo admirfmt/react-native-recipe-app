@@ -27,7 +27,8 @@ export default function RegisterScreen({ navigation }) {
     setBusy(true);
     try {
       await signUp(username.trim(), password);
-      Alert.alert("Done", "Account created successfully and you are logged in.");
+      Alert.alert("Done", "Account created successfully and now you can log in.");
+      navigation.navigate("Login");
     } catch (e) {
       setError(e.status === 409 ? "Username already exists." : e.message);
       setBusy(false);

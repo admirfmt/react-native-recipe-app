@@ -82,8 +82,8 @@ function toRecipe(row, req) {
 
 server.get("/api/recipes", requireAuth, async (req, res) => {
   try {
-    const search = (req.query.search || "").trim().toLowerCase();
-    const category = (req.query.category || "").trim().toLowerCase();
+    const search = (req.query.search || "").trim();
+    const category = (req.query.category || "").trim();
 
     const { rows } = await pool.query(
       `SELECT * FROM recipes
@@ -143,7 +143,7 @@ server.patch("/api/recipes/:id", requireAuth, async (req, res) => {
     const recipe = existing.rows[0];
     if (!recipe) return res.status(404).json({ message: "Recipe not found." });
     if (recipe.user_id !== req.user?.userId) {
-      return res.status(403).json({ message: "You can only edit own recipes." });
+      return res.status(403).json({ message: "You can only update own recipes." });
     }
 
     const title = req.body.title !== undefined ? req.body.title.trim() : recipe.title;
@@ -163,7 +163,7 @@ server.patch("/api/recipes/:id", requireAuth, async (req, res) => {
     res.json(toRecipe(rows[0]));
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "Could not update recept." });
+    res.status(500).json({ message: "Could not update recipe." });
   }
 });
 
@@ -182,6 +182,23 @@ server.delete("/api/recipes/:id", requireAuth, async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Could not delete recipe." });
+  }
+});
+
+// Current User
+server.get("/api/auth/me", requireAuth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, username FROM users WHERE id = $1",
+      [req.user.userId]
+    );
+    if (!rows[0]) {
+      return res.status(401).json({ message: "Account does not exist." });
+    }
+    res.json(rows[0]);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Could not load username." });
   }
 });
 

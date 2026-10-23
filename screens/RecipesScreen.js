@@ -18,7 +18,7 @@ import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useFavorites } from "../context/FavoritesContext";
 
 export default function RecipesScreen({ navigation }) {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
@@ -117,6 +117,7 @@ export default function RecipesScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {user ? <Text style={styles.userLine}>Logged in as {user.username}</Text> : null}
       <View style={styles.searchRow}>
         <TextInput
           style={styles.search}
@@ -126,6 +127,7 @@ export default function RecipesScreen({ navigation }) {
           autoCapitalize="none"
           returnKeyType="search"
         />
+
         {searchText ? (
           <Pressable onPress={onSearch} style={styles.clear}>
             <Text style={styles.clearText}>Clear</Text>
@@ -322,4 +324,5 @@ const styles = StyleSheet.create({
     fontSize: fontSize.medium,
     fontWeight: fontWeight.bold
   },
+  userLine: { paddingHorizontal: 16, paddingTop: 12, color: "#666" },
 });

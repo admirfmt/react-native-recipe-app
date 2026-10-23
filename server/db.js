@@ -11,7 +11,7 @@ pool.on("connect", (client) => {
   console.log("Connected to the database");
 });
 
-pool.off("disconnect", () => {
+pool.on("remove", () => {
   console.log("Disconnected from the database");
 });
 

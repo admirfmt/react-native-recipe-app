@@ -1,21 +1,33 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
 import { useAuth } from "../context/AuthContext";
 
 export default function HomeScreen({ navigation }) {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, user, signOut } = useAuth();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recipe App</Text>
       <Text style={styles.subtitle}>Find, create, save and share recipes.</Text>
 
       {isSignedIn ? (
-        <Pressable
-          style={styles.primary}
-          onPress={() => navigation.navigate("Recipes")}
-        >
-          <Text style={styles.primaryText}>View Recipes</Text>
-        </Pressable>
+        <>
+          {user ? (
+            <Text style={styles.signedInAs}>Logged in as {user.username}</Text>
+          ) : null}
+
+          <Pressable
+            style={styles.primary}
+            onPress={() => navigation.navigate("Recipes")}
+          >
+            <Text style={styles.primaryText}>View Recipes</Text>
+          </Pressable>
+          <Pressable style={styles.secondary} onPress={async () => {
+            await signOut();
+            Alert.alert("Done", "You have been logged out.");
+          }}>
+            <Text style={styles.secondaryText}>Logout</Text>
+          </Pressable>
+        </>
       ) : (
         <>
           <Pressable
@@ -77,5 +89,11 @@ const styles = StyleSheet.create({
     color: "#2e7d32",
     textAlign: "center",
     fontSize: fontSize.medium
+  },
+  signedInAs: {
+    textAlign: "center",
+    color: "#2e7d32",
+    fontSize: 16,
+    fontWeight: "600"
   },
 });
