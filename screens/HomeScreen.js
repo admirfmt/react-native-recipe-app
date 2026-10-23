@@ -1,32 +1,37 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
+import { useAuth } from "../context/AuthContext";
 
 export default function HomeScreen({ navigation }) {
+  const { isSignedIn } = useAuth();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recipe App</Text>
       <Text style={styles.subtitle}>Find, create, save and share recipes.</Text>
 
-      <Pressable
-        style={styles.primary}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.primaryText}>Log in</Text>
-      </Pressable>
-      <Pressable
-        style={styles.primary}
-        onPress={() => navigation.navigate("Recipes")}
-      >
-        <Text style={styles.primaryText}>View Recipes</Text>
-      </Pressable>
-
-      <Pressable
-        style={styles.secondary}
-        onPress={() => navigation.navigate("Register")}
-      >
-        <Text style={styles.secondaryText}>Register</Text>
-      </Pressable>
-
+      {isSignedIn ? (
+        <Pressable
+          style={styles.primary}
+          onPress={() => navigation.navigate("Recipes")}
+        >
+          <Text style={styles.primaryText}>View Recipes</Text>
+        </Pressable>
+      ) : (
+        <>
+          <Pressable
+            style={styles.secondary}
+            onPress={() => navigation.navigate("Register")}
+          >
+            <Text style={styles.secondaryText}>Register</Text>
+          </Pressable>
+          <Pressable
+            style={styles.primary}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={styles.primaryText}>Log in</Text>
+          </Pressable>
+        </>
+      )}
     </View>
   );
 }

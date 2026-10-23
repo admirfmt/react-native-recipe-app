@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Pressable, Text } from "react-native";
+import { Alert, Pressable, Text } from "react-native";
 
-import { AuthProvider } from "./context/AuthContext";
+import { useAuth, AuthProvider } from "./context/AuthContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -15,13 +15,19 @@ import { fontSize } from "./constants/typography";
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function AppNavigator() {
+  const { isSignedIn, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    Alert.alert("Done", "You have been logged out.");
+  };
 
   return (
-    <AuthProvider>
-      <FavoritesProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isSignedIn ? (
+          <>
             <Stack.Screen
               name="Home"
               component={HomeScreen}
@@ -31,7 +37,12 @@ export default function App() {
               name="Recipes"
               component={RecipesScreen}
               options={({ navigation }) => ({
-                title: "Recipes",
+                title: "My Recipes",
+                headerLeft: () => (
+                  <Pressable onPress={handleSignOut} >
+                    <Text style={{ color: "#c62828", fontSize: 16 }}>Log out</Text>
+                  </Pressable>
+                ),
                 headerRight: () => (
                   <Pressable onPress={() => navigation.navigate("Favorites")}>
                     <Text style={{ color: "#2e7d32", fontSize: fontSize.large }}>Favorites</Text>
@@ -66,8 +77,36 @@ export default function App() {
               component={FavoritesScreen}
               options={{ title: "Favorite Recipes " }}
             />
-          </Stack.Navigator>
-        </NavigationContainer>
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: "Recipe App" }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: "Log in" }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{ title: "Register" }}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+export default function App() {
+
+  return (
+    <AuthProvider>
+      <FavoritesProvider>
+        <AppNavigator />
       </FavoritesProvider>
     </AuthProvider>
   );

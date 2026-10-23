@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { fontSize, fontWeight } from "../constants/typography";
@@ -25,6 +26,7 @@ export default function LoginScreen({ navigation }) {
     setBusy(true);
     try {
       await signIn(username.trim(), password);
+      Alert.alert("Done", "You are logged in.");
     } catch (e) {
       setError(
         e.status === 400 || e.status === 401
