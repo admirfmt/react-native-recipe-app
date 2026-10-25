@@ -16,6 +16,7 @@ import { CATEGORIES } from "../config";
 import { fontSize, fontWeight } from "../constants/typography";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useFavorites } from "../context/FavoritesContext";
+import { ChipCategory } from "../components/ChipCategory";
 
 export default function RecipesScreen({ navigation }) {
   const { token, user } = useAuth();
@@ -141,20 +142,18 @@ export default function RecipesScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.chips}
         >
-          <Pressable
-            style={[styles.chip, !category && styles.chipActive]}
+          <ChipCategory
+            label="All"
+            active={!category}
             onPress={() => setCategory("")}
-          >
-            <Text style={[styles.chipText, !category && styles.chipTextActive]}>All</Text>
-          </Pressable>
+          />
           {CATEGORIES.map((c) => (
-            <Pressable
+            <ChipCategory
               key={c}
-              style={[styles.chip, category === c && styles.chipActive]}
+              label={c}
+              active={category === c}
               onPress={() => setCategory(category === c ? "" : c)}
-            >
-              <Text style={[styles.chipText, category === c && styles.chipTextActive]}>{c}</Text>
-            </Pressable>
+            />
           ))}
         </ScrollView>
       </View>
@@ -239,24 +238,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 8,
     gap: 8
-  },
-  chip: {
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    minHeight: 40,
-    justifyContent: "center",
-  },
-  chipActive: {
-    backgroundColor: "#2e7d32"
-  },
-  chipText: {
-    color: "#2e7d32"
-  },
-  chipTextActive: {
-    color: "#fff"
   },
   card: {
     backgroundColor: "#fff",

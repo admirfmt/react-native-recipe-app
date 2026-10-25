@@ -1,13 +1,16 @@
 import { useCallback, useState } from "react";
 import {
-  View, Text, FlatList, Pressable, ActivityIndicator, StyleSheet,
+  View, Text, FlatList, Pressable, StyleSheet,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
 import { getRecipes } from "../api/recipes";
 import { LoadingIndicator } from "../components/LoadingIndicator";
-import { fontSize, fontWeight } from "../constants/typography";
+import { fontSize } from "../constants/typography";
+import RecipeCard from "../components/RecipeCard";
+import EmptyCard from "../components/EmptyCard";
+import { colors } from "../constants/colors";
 
 export default function FavoritesScreen({ navigation }) {
   const { token } = useAuth();
@@ -62,23 +65,16 @@ export default function FavoritesScreen({ navigation }) {
         recipes.length === 0 ? { flexGrow: 1 } : { padding: 16, gap: 12 }
       }
       renderItem={({ item }) => (
-        <Pressable
-          style={styles.card}
+        <RecipeCard
+          recipe={item}
           onPress={() => navigation.navigate("RecipeDetail", { recipeId: item.id })}
-        >
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.meta} numberOfLines={1}>
-            {item.ingredients?.join(", ")}
-          </Text>
-        </Pressable>
+        />
       )}
       ListEmptyComponent={
-        <View style={styles.center}>
-          <Text style={styles.emptyTitle}>You have not saved any recipes yet.</Text>
-          <Text style={styles.emptyText}>
-            Click on "Save" in a recipe to add it here.
-          </Text>
-        </View>
+        <EmptyCard
+          title="You have not added any recipes yet."
+          message='Click on "Add to Favorites" in a recipe to add it here.'
+        />
       }
     />
   );
@@ -92,50 +88,20 @@ const styles = StyleSheet.create({
     padding: 24,
     gap: 12
   },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-  },
-  title: {
-    fontSize: fontSize.large,
-    fontWeight: fontWeight.bold
-  },
-  meta: {
-    color: "#666",
-    marginTop: 4
-  },
   error: {
-    color: "#c62828",
+    color: colors.danger,
     textAlign: "center",
     fontSize: fontSize.medium
   },
-  emptyTitle: {
-    fontSize: fontSize.large,
-    fontWeight: fontWeight.bold,
-    textAlign: "center"
-  },
-  emptyText: {
-    color: "#666",
-    textAlign: "center"
-  },
   button: {
-    backgroundColor: "#2e7d32",
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center"
   },
   buttonText: {
-    color: "#fff",
+    color: colors.card,
     textAlign: "center",
     fontSize: fontSize.medium
   },

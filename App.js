@@ -12,6 +12,7 @@ import RecipeDetailScreen from "./screens/RecipeDetailScreen";
 import RecipeFormScreen from "./screens/RecipeFormScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { fontSize } from "./constants/typography";
+import { colors } from "./constants/colors";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,15 +33,15 @@ function AppNavigator() {
               name="Recipes"
               component={RecipesScreen}
               options={({ navigation }) => ({
-                title: "My Recipes",
+                title: " My Recipes",
                 headerLeft: () => (
                   <Pressable onPress={handleSignOut} >
-                    <Text style={{ color: "#c62828", fontSize: 16 }}>Log out</Text>
+                    <Text style={{ color: colors.danger, fontSize: fontSize.medium }}>Log out</Text>
                   </Pressable>
                 ),
                 headerRight: () => (
                   <Pressable onPress={() => navigation.navigate("Favorites")}>
-                    <Text style={{ color: "#2e7d32", fontSize: fontSize.large }}>Favorites</Text>
+                    <Text style={{ color: colors.primary, fontSize: fontSize.large }}>Favorites</Text>
                   </Pressable>
                 ),
               })}

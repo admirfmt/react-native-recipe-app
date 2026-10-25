@@ -1,6 +1,7 @@
 import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
 import { useAuth } from "../context/AuthContext";
+import CustomButton from "../components/CustomButton";
 
 export default function HomeScreen({ navigation }) {
   const { isSignedIn, user, signOut } = useAuth();
@@ -15,12 +16,10 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.signedInAs}>Logged in as {user.username}</Text>
           ) : null}
 
-          <Pressable
-            style={styles.primary}
+          <CustomButton
+            title="View Recipes"
             onPress={() => navigation.navigate("Recipes")}
-          >
-            <Text style={styles.primaryText}>View Recipes</Text>
-          </Pressable>
+          />
           <Pressable style={styles.secondary} onPress={async () => {
             await signOut();
             Alert.alert("Done", "You have been logged out.");
@@ -36,12 +35,10 @@ export default function HomeScreen({ navigation }) {
           >
             <Text style={styles.secondaryText}>Register</Text>
           </Pressable>
-          <Pressable
-            style={styles.primary}
+          <CustomButton
+            title="Log in"
             onPress={() => navigation.navigate("Login")}
-          >
-            <Text style={styles.primaryText}>Log in</Text>
-          </Pressable>
+          />
         </>
       )}
     </View>
@@ -64,18 +61,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.medium,
     textAlign: "center",
     color: "#555"
-  },
-  primary: {
-    backgroundColor: "#2e7d32",
-    padding: 14,
-    borderRadius: 8,
-    minHeight: 48,
-    justifyContent: "center",
-  },
-  primaryText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: fontSize.medium
   },
   secondary: {
     borderWidth: 1,

@@ -14,6 +14,7 @@ import { updateRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
 import { CATEGORIES } from "../config";
 import { LoadingIndicator } from "../components/LoadingIndicator";
+import { ChipCategory } from "../components/ChipCategory";
 
 export default function RecipeFormScreen({ navigation, route }) {
   const isExistingRecipe = route.params?.recipe;
@@ -76,13 +77,12 @@ export default function RecipeFormScreen({ navigation, route }) {
       <Text style={styles.label}>Category</Text>
       <View style={styles.chips}>
         {CATEGORIES.map((c) => (
-          <Pressable
+          <ChipCategory
             key={c}
-            style={[styles.chip, category === c && styles.chipActive]}
+            label={c}
+            active={category === c}
             onPress={() => setCategory(c)}
-          >
-            <Text style={[styles.chipText, category === c && styles.chipTextActive]}>{c}</Text>
-          </Pressable>
+          />
         ))}
       </View>
 
@@ -144,23 +144,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8
-  },
-  chip: {
-    borderWidth: 1,
-    borderColor: "#2e7d32",
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    minHeight: 40,
-    justifyContent: "center",
-  },
-  chipActive: {
-    backgroundColor: "#2e7d32"
-  },
-  chipText: {
-    color: "#2e7d32"
-  },
-  chipTextActive: {
-    color: "#fff"
   },
 });

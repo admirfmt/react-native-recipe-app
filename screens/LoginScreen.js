@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { fontSize, fontWeight } from "../constants/typography";
-import { LoadingIndicator } from "../components/LoadingIndicator";
+import CustomButton from "../components/CustomButton";
 
 export default function LoginScreen({ navigation }) {
   const { signIn } = useAuth();
@@ -50,9 +50,11 @@ export default function LoginScreen({ navigation }) {
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <Pressable style={[styles.button, busy && { opacity: 0.6 }]} onPress={handleLogin} disabled={busy}>
-        {busy ? <LoadingIndicator color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
-      </Pressable>
+      <CustomButton
+        title="Login"
+        onPress={handleLogin}
+        loading={busy}
+      />
 
       <Pressable onPress={() => navigation.navigate("Register")}>
         <Text style={styles.link}>Don't have an a account? Register</Text>
@@ -81,19 +83,6 @@ const styles = StyleSheet.create({
   error: {
     color: "#c62828",
     marginTop: 4
-  },
-  button: {
-    backgroundColor: "#2e7d32",
-    padding: 14,
-    borderRadius: 8,
-    minHeight: 48,
-    justifyContent: "center",
-    marginTop: 16
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: fontSize.medium
   },
   link: {
     color: "#2e7d32",

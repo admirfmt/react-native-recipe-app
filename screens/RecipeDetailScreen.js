@@ -15,6 +15,7 @@ import { fontSize, fontWeight } from "../constants/typography";
 import { buildShareText } from "../utils/shareText";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useFavorites } from "../context/FavoritesContext";
+import CustomButton from "../components/CustomButton";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -100,11 +101,10 @@ export default function RecipeDetailScreen({ route, navigation }) {
         <Pressable style={styles.shareButton} onPress={handleShare}>
           <Text style={styles.shareText}>Share</Text>
         </Pressable>
-        <Pressable style={styles.button}
+        <CustomButton
+          title="Edit"
           onPress={() => navigation.navigate("RecipeForm", { recipe })}
-        >
-          <Text style={styles.buttonText}>Edit</Text>
-        </Pressable>
+        />
 
         <Pressable
           style={[styles.deleteButton, deleting && { opacity: 0.6 }]}
