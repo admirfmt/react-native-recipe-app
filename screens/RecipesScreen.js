@@ -20,7 +20,7 @@ import { useFavorites } from "../context/FavoritesContext";
 import { ChipCategory } from "../components/ChipCategory";
 import { spacing } from "../constants/spacing";
 import { colors } from "../constants/colors";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CustomButton from "../components/CustomButton";
 
 export default function RecipesScreen({ navigation }) {
   const { token, user } = useAuth();
@@ -105,9 +105,10 @@ export default function RecipesScreen({ navigation }) {
           {hasFilter ? "No recipe matching your search." : "No recipes found."}
         </Text>
         {hasFilter ? (
-          <Pressable style={styles.button} onPress={clearFilters}>
-            <Text style={styles.buttonText}>Clear filter</Text>
-          </Pressable>
+          <CustomButton
+            title="Clear filter"
+            onPress={clearFilters}
+          />
         ) : (
           <Text style={styles.emptyText}>Create your first recept to get started.</Text>
         )}
@@ -173,7 +174,7 @@ export default function RecipesScreen({ navigation }) {
         data={error ? [] : recipes}
         keyExtractor={(item) => String(item.id)}
         contentContainerStyle={
-          recipes.length === 0 || error ? { flexGrow: 1 } : { padding: 16, gap: 12, paddingBottom: 96 }
+          recipes.length === 0 || error ? { flexGrow: 1 } : { padding: spacing.medium, gap: 12, paddingBottom: spacing.largest }
         }
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (

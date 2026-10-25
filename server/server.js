@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import pool from "./db.js";
+import pool, { initDb } from "./db.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -202,6 +202,12 @@ server.get("/api/auth/me", requireAuth, async (req, res) => {
   }
 });
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+try {
+  await initDb();
+  server.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+} catch (e) {
+  console.error("Could not initialize database:", e);
+  process.exit(1);
+}
