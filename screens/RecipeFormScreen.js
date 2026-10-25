@@ -9,8 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { createRecipe } from "../api/recipes";
-import { updateRecipe } from "../api/recipes";
+import { createRecipe, updateRecipe } from "../api/recipes";
 import { fontSize, fontWeight } from "../constants/typography";
 import { CATEGORIES } from "../config";
 import { LoadingIndicator } from "../components/LoadingIndicator";

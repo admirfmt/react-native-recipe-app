@@ -9,11 +9,9 @@ import {
   Alert
 } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
-import { LoadingIndicator } from "../components/LoadingIndicator";
 import CustomButton from "../components/CustomButton";
 import { spacing } from "../constants/spacing";
 import { colors } from "../constants/colors";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen({ navigation }) {
   const { signUp } = useAuth();
@@ -37,7 +35,6 @@ export default function RegisterScreen({ navigation }) {
       setError(e.status === 409 ? "Username already exists." : e.message);
       setBusy(false);
     }
-    console.log("Registering user:", username, password);
   };
 
   return (

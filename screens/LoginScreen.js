@@ -38,7 +38,6 @@ export default function LoginScreen({ navigation }) {
       );
       setBusy(false);
     }
-    console.log("Logging in user:", username, password);
   };
 
   return (
