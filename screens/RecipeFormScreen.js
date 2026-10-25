@@ -108,7 +108,10 @@ export default function RecipeFormScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     padding: spacing.large,
-    gap: 8
+    gap: 8,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center"
   },
   label: {
     fontSize: fontSize.small,

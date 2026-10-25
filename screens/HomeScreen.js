@@ -52,7 +52,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: spacing.large,
-    gap: 16
+    gap: 16,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center"
   },
   title: {
     fontSize: fontSize.xxLarge,

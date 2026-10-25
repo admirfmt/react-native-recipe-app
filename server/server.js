@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const server = express();
-const port = 3000;
+const port = process.env.PORT;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 server.use(cors());

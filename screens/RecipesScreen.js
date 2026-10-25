@@ -8,6 +8,7 @@ import {
   StyleSheet,
   RefreshControl,
   ScrollView,
+  useWindowDimensions,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
@@ -19,6 +20,7 @@ import { useFavorites } from "../context/FavoritesContext";
 import { ChipCategory } from "../components/ChipCategory";
 import { spacing } from "../constants/spacing";
 import { colors } from "../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RecipesScreen({ navigation }) {
   const { token, user } = useAuth();
@@ -33,6 +35,8 @@ export default function RecipesScreen({ navigation }) {
   const [category, setCategory] = useState("");
   const requestId = useRef(0);
   const { isFavorite } = useFavorites();
+  const { width } = useWindowDimensions();
+  const numColumns = width >= 700 ? 2 : 1;
 
   useEffect(() => {
     const t = setTimeout(() => setSearch(searchText.trim()), 400);
@@ -163,6 +167,9 @@ export default function RecipesScreen({ navigation }) {
       {fetching ? <LoadingIndicator style={{ marginVertical: 8 }} /> : null}
 
       <FlatList
+        key={numColumns}
+        numColumns={numColumns}
+        columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
         data={error ? [] : recipes}
         keyExtractor={(item) => String(item.id)}
         contentContainerStyle={
@@ -171,7 +178,7 @@ export default function RecipesScreen({ navigation }) {
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
           <Pressable
-            style={styles.card}
+            style={[styles.card, { flex: 1 }]}
             onPress={() => navigation.navigate("RecipeDetail", { recipeId: item.id })}
           >
             <Text style={styles.title}>
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: spacing.medium,
-    bottom: spacing.large,
+    bottom: spacing.xxLarge,
     backgroundColor: colors.primary,
     borderRadius: 24,
     paddingVertical: spacing.medium,

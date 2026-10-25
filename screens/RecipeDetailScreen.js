@@ -18,6 +18,7 @@ import { useFavorites } from "../context/FavoritesContext";
 import CustomButton from "../components/CustomButton";
 import { spacing } from "../constants/spacing";
 import { colors } from "../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -91,35 +92,37 @@ export default function RecipeDetailScreen({ route, navigation }) {
       {recipe.ingredients?.map((ing, i) => (
         <Text key={i} style={styles.item}>- {ing}</Text>
       ))}
-      <View style={styles.actions}>
-        <Pressable
-          style={[styles.shareButton, isFavorite(recipe.id) && styles.favActive]}
-          onPress={() => toggleFavorite(recipe.id)}
-        >
-          <Text style={[styles.shareText, isFavorite(recipe.id) && { color: "#fff" }]}>
-            {isFavorite(recipe.id) ? "♥ Remove from Favorites" : "♡ Add to Favorites"}
-          </Text>
-        </Pressable>
-        <Pressable style={styles.shareButton} onPress={handleShare}>
-          <Text style={styles.shareText}>Share</Text>
-        </Pressable>
-        <CustomButton
-          title="Edit"
-          onPress={() => navigation.navigate("RecipeForm", { recipe })}
-        />
+      <SafeAreaView>
+        <View style={styles.actions}>
+          <Pressable
+            style={[styles.shareButton, isFavorite(recipe.id) && styles.favActive]}
+            onPress={() => toggleFavorite(recipe.id)}
+          >
+            <Text style={[styles.shareText, isFavorite(recipe.id) && { color: "#fff" }]}>
+              {isFavorite(recipe.id) ? "♥ Remove from Favorites" : "♡ Add to Favorites"}
+            </Text>
+          </Pressable>
+          <Pressable style={styles.shareButton} onPress={handleShare}>
+            <Text style={styles.shareText}>Share</Text>
+          </Pressable>
+          <CustomButton
+            title="Edit"
+            onPress={() => navigation.navigate("RecipeForm", { recipe })}
+          />
 
-        <Pressable
-          style={[styles.deleteButton, deleting && { opacity: 0.6 }]}
-          onPress={confirmDelete}
-          disabled={deleting}
-        >
-          {deleting ? (
-            <LoadingIndicator color="#c62828" />
-          ) : (
-            <Text style={styles.deleteText}>Delete</Text>
-          )}
-        </Pressable>
-      </View>
+          <Pressable
+            style={[styles.deleteButton, deleting && { opacity: 0.6 }]}
+            onPress={confirmDelete}
+            disabled={deleting}
+          >
+            {deleting ? (
+              <LoadingIndicator color="#c62828" />
+            ) : (
+              <Text style={styles.deleteText}>Delete</Text>
+            )}
+          </Pressable>
+        </View>
+      </SafeAreaView>
     </ScrollView>
   );
 }
@@ -128,7 +131,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: spacing.large,
-    gap: 12
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center"
   },
   recipeTitle: {
     fontSize: fontSize.xLarge,

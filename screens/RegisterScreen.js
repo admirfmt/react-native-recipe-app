@@ -13,6 +13,7 @@ import { LoadingIndicator } from "../components/LoadingIndicator";
 import CustomButton from "../components/CustomButton";
 import { spacing } from "../constants/spacing";
 import { colors } from "../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen({ navigation }) {
   const { signUp } = useAuth();
@@ -75,7 +76,10 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: spacing.large,
-    gap: 8
+    gap: 8,
+    width: "100%",
+    maxWidth: 560,
+    alignSelf: "center"
   },
   label: {
     fontSize: fontSize.small,

@@ -13,6 +13,7 @@ import RecipeFormScreen from "./screens/RecipeFormScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { fontSize } from "./constants/typography";
 import { colors } from "./constants/colors";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -105,10 +106,12 @@ function AppNavigator() {
 export default function App() {
 
   return (
-    <AuthProvider>
-      <FavoritesProvider>
-        <AppNavigator />
-      </FavoritesProvider>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <FavoritesProvider>
+          <AppNavigator />
+        </FavoritesProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
