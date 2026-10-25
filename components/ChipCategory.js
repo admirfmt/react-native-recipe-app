@@ -1,5 +1,6 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { colors } from "../constants/colors";
+import { spacing } from "../constants/spacing";
 
 export function ChipCategory({ label, active, onPress }) {
   return (
@@ -19,8 +20,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    paddingVertical: spacing.small,
+    paddingHorizontal: spacing.medium,
     minHeight: 40,
     justifyContent: "center",
   },

@@ -2,6 +2,8 @@ import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
 import { useAuth } from "../context/AuthContext";
 import CustomButton from "../components/CustomButton";
+import { spacing } from "../constants/spacing";
+import { colors } from "../constants/colors";
 
 export default function HomeScreen({ navigation }) {
   const { isSignedIn, user, signOut } = useAuth();
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24,
+    padding: spacing.large,
     gap: 16
   },
   title: {
@@ -64,21 +66,21 @@ const styles = StyleSheet.create({
   },
   secondary: {
     borderWidth: 1,
-    borderColor: "#2e7d32",
-    padding: 14,
+    borderColor: colors.primary,
+    padding: spacing.medium,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
   },
   secondaryText: {
-    color: "#2e7d32",
+    color: colors.primary,
     textAlign: "center",
     fontSize: fontSize.medium
   },
   signedInAs: {
     textAlign: "center",
-    color: "#2e7d32",
-    fontSize: 16,
-    fontWeight: "600"
+    color: colors.primary,
+    fontSize: fontSize.medium,
+    fontWeight: fontWeight.bold
   },
 });

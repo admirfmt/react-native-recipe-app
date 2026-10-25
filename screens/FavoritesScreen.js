@@ -11,6 +11,7 @@ import { fontSize } from "../constants/typography";
 import RecipeCard from "../components/RecipeCard";
 import EmptyCard from "../components/EmptyCard";
 import { colors } from "../constants/colors";
+import { spacing } from "../constants/spacing";
 
 export default function FavoritesScreen({ navigation }) {
   const { token } = useAuth();
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 24,
+    padding: spacing.large,
     gap: 12
   },
   error: {
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primary,
-    padding: 14,
+    padding: spacing.medium,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center"

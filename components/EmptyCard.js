@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { colors } from "../constants/colors";
 import { fontSize, fontWeight } from "../constants/typography";
+import { spacing } from "../constants/spacing";
 
 export default function EmptyCard({ title, message }) {
   return (
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 24,
+    padding: spacing.large,
     gap: 12
   },
   emptyTitle: {

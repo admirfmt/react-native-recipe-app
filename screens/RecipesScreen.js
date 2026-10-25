@@ -17,6 +17,8 @@ import { fontSize, fontWeight } from "../constants/typography";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useFavorites } from "../context/FavoritesContext";
 import { ChipCategory } from "../components/ChipCategory";
+import { spacing } from "../constants/spacing";
+import { colors } from "../constants/colors";
 
 export default function RecipesScreen({ navigation }) {
   const { token, user } = useAuth();
@@ -205,44 +207,44 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 24,
+    padding: spacing.large,
     gap: 12
   },
   searchRow: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    paddingBottom: 8,
+    padding: spacing.medium,
+    paddingBottom: spacing.small,
     gap: 8
   },
   search: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderRadius: 8,
-    padding: 12,
+    padding: spacing.small,
     fontSize: fontSize.medium,
     minHeight: 48,
-    backgroundColor: "#fff",
+    backgroundColor: colors.card,
   },
   clear: {
     minHeight: 48,
     justifyContent: "center",
-    paddingHorizontal: 8
+    paddingHorizontal: spacing.small
   },
   clearText: {
-    color: "#2e7d32",
+    color: colors.primary,
     fontSize: fontSize.medium
   },
   chips: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingHorizontal: spacing.medium,
+    paddingBottom: spacing.small,
     gap: 8
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.card,
     borderRadius: 12,
-    padding: 16,
+    padding: spacing.medium,
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -257,16 +259,16 @@ const styles = StyleSheet.create({
     fontWeight: fontWeight.bold
   },
   category: {
-    color: "#2e7d32",
+    color: colors.primary,
     marginTop: 2,
     fontSize: fontSize.small
   },
   meta: {
-    color: "#666",
-    marginTop: 4
+    color: colors.muted,
+    marginTop: spacing.xSmall
   },
   error: {
-    color: "#c62828",
+    color: colors.danger,
     textAlign: "center",
     fontSize: fontSize.medium
   },
@@ -276,34 +278,38 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   emptyText: {
-    color: "#666",
+    color: colors.muted,
     textAlign: "center"
   },
   button: {
-    backgroundColor: "#2e7d32",
-    padding: 14,
+    backgroundColor: colors.primary,
+    padding: spacing.medium,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: colors.card,
     textAlign: "center",
     fontSize: fontSize.medium
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 24,
-    backgroundColor: "#2e7d32",
+    right: spacing.medium,
+    bottom: spacing.large,
+    backgroundColor: colors.primary,
     borderRadius: 24,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
+    paddingVertical: spacing.medium,
+    paddingHorizontal: spacing.large,
   },
   fabText: {
-    color: "#fff",
+    color: colors.card,
     fontSize: fontSize.medium,
     fontWeight: fontWeight.bold
   },
-  userLine: { paddingHorizontal: 16, paddingTop: 12, color: "#666" },
+  userLine: {
+    paddingHorizontal: spacing.medium,
+    paddingTop: spacing.small,
+    color: colors.muted
+  },
 });

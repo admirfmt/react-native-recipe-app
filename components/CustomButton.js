@@ -2,6 +2,7 @@ import { Pressable, Text, StyleSheet } from "react-native";
 import { fontSize } from "../constants/typography";
 import { colors } from "../constants/colors";
 import { LoadingIndicator } from "./LoadingIndicator";
+import { spacing } from "../constants/spacing";
 
 export default function CustomButton({ title, onPress, loading = false, disabled = false, style }) {
   const isDisabled = loading || disabled;
@@ -21,7 +22,7 @@ export default function CustomButton({ title, onPress, loading = false, disabled
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
-    padding: 14,
+    padding: spacing.medium,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center"

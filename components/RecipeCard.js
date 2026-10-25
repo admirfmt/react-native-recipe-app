@@ -1,6 +1,7 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { fontSize, fontWeight } from "../constants/typography";
 import { colors } from "../constants/colors";
+import { spacing } from "../constants/spacing";
 
 export default function RecipeCard({ recipe, onPress }) {
   return (
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
     borderRadius: 12,
-    padding: 16,
+    padding: spacing.medium,
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: 0.1,

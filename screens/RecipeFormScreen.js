@@ -15,6 +15,8 @@ import { fontSize, fontWeight } from "../constants/typography";
 import { CATEGORIES } from "../config";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { ChipCategory } from "../components/ChipCategory";
+import { spacing } from "../constants/spacing";
+import { colors } from "../constants/colors";
 
 export default function RecipeFormScreen({ navigation, route }) {
   const isExistingRecipe = route.params?.recipe;
@@ -105,7 +107,7 @@ export default function RecipeFormScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: spacing.large,
     gap: 8
   },
   label: {
@@ -114,9 +116,9 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderRadius: 8,
-    padding: 12,
+    padding: spacing.small,
     fontSize: fontSize.medium,
     minHeight: 48,
   },
@@ -124,19 +126,19 @@ const styles = StyleSheet.create({
     minHeight: 140
   },
   error: {
-    color: "#c62828",
-    marginTop: 4
+    color: colors.danger,
+    marginTop: spacing.xSmall
   },
   button: {
-    backgroundColor: "#2e7d32",
-    padding: 14,
+    backgroundColor: colors.primary,
+    padding: spacing.medium,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
-    marginTop: 16,
+    marginTop: spacing.small,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.card,
     textAlign: "center",
     fontSize: fontSize.medium
   },

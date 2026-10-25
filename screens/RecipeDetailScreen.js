@@ -16,6 +16,8 @@ import { buildShareText } from "../utils/shareText";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useFavorites } from "../context/FavoritesContext";
 import CustomButton from "../components/CustomButton";
+import { spacing } from "../constants/spacing";
+import { colors } from "../constants/colors";
 
 export default function RecipeDetailScreen({ route, navigation }) {
   const { recipeId } = route.params;
@@ -125,7 +127,7 @@ export default function RecipeDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: spacing.large,
     gap: 12
   },
   recipeTitle: {
@@ -146,48 +148,48 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   actions: {
-    marginTop: 24,
+    marginTop: spacing.large,
     gap: 12
   },
   button: {
-    backgroundColor: "#2e7d32",
-    padding: 14,
+    backgroundColor: colors.primary,
+    padding: spacing.small,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: colors.card,
     textAlign: "center",
     fontSize: fontSize.medium
   },
   deleteButton: {
     borderWidth: 1,
-    borderColor: "#c62828",
-    padding: 14,
+    borderColor: colors.danger,
+    padding: spacing.small,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
   },
   deleteText: {
-    color: "#c62828",
+    color: colors.danger,
     textAlign: "center",
     fontSize: fontSize.medium
   },
   shareButton: {
     borderWidth: 1,
-    borderColor: "#2e7d32",
-    padding: 14,
+    borderColor: colors.primary,
+    padding: spacing.small,
     borderRadius: 8,
     minHeight: 48,
     justifyContent: "center",
   },
   shareText: {
-    color: "#2e7d32",
+    color: colors.primary,
     textAlign: "center",
     fontSize: fontSize.medium
   },
   favActive: {
-    backgroundColor: "#2e7d32"
+    backgroundColor: colors.primary
   },
 });

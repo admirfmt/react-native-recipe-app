@@ -11,6 +11,8 @@ import {
 import { fontSize, fontWeight } from "../constants/typography";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import CustomButton from "../components/CustomButton";
+import { spacing } from "../constants/spacing";
+import { colors } from "../constants/colors";
 
 export default function RegisterScreen({ navigation }) {
   const { signUp } = useAuth();
@@ -72,7 +74,7 @@ export default function RegisterScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: spacing.large,
     gap: 8
   },
   label: {
@@ -81,19 +83,19 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.border,
     borderRadius: 8,
-    padding: 12,
+    padding: spacing.small,
     fontSize: fontSize.medium,
     minHeight: 48,
   },
   error: {
-    color: "#c62828",
-    marginTop: 4
+    color: colors.danger,
+    marginTop: spacing.xSmall
   },
   link: {
-    color: "#2e7d32",
+    color: colors.primary,
     textAlign: "center",
-    marginTop: 16
+    marginTop: spacing.medium
   },
 });
